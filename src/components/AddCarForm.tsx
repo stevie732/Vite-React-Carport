@@ -6,6 +6,7 @@ import { Car } from '../types/Car';
 const AddCarForm: React.FC = () => {
   const [cars, setCars] = useLocalStorage<Car[]>('cars', []);
   const navigate = useNavigate();
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
   const [formData, setFormData] = useState({
     make: '',
     model: '',
@@ -30,15 +31,18 @@ const AddCarForm: React.FC = () => {
       price: Number(formData.price),
       mileage: Number(formData.mileage),
     };
-    setCars(prevCars => [...prevCars, newCar]);
+    setCars((prevCars: Car[]) => {
+      const updatedCars = [...prevCars, newCar];
+      console.log('Updated cars:', updatedCars);
+      return updatedCars;
+    });
     console.log('New car added:', newCar);
-    console.log('Updated cars:', [...cars, newCar]);
     navigate('/cars');
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold mb-8">Add New Car</h1>
+      <h1 className="text-3xl font-bold mb-8">Add New Car for {currentUser.email}</h1>
       <form onSubmit={handleSubmit} className="bg-white shadow rounded-lg p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>

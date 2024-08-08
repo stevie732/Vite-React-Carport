@@ -6,6 +6,7 @@ import { Car } from '../types/Car';
 const CarList: React.FC = () => {
   const [cars] = useLocalStorage<Car[]>('cars', []);
   const [, forceUpdate] = useState({});
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
   useEffect(() => {
     forceUpdate({});
@@ -13,7 +14,7 @@ const CarList: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold mb-8">Car Inventory</h1>
+      <h1 className="text-3xl font-bold mb-8">Car Inventory for {currentUser.email}</h1>
       {cars.length === 0 ? (
         <p>No cars in the inventory. Add some cars!</p>
       ) : (
